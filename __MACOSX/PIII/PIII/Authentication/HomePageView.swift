@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct HomePageView: View {
-    
-    @EnvironmentObject var authManager: AuthenticationManager
 
+    @EnvironmentObject var authManager: AuthenticationManager
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         NavigationStack {
@@ -25,9 +25,10 @@ struct HomePageView: View {
                         .background(Color.green)
                         .cornerRadius(10)
                 }
-                  Button(action: {
+                   Button(action: {
                     do {
                         try authManager.signOut()
+                        presentationMode.wrappedValue.dismiss()
                     } catch {
                         print("Error signing out: \(error)")
                     }
@@ -43,7 +44,7 @@ struct HomePageView: View {
             .padding()
             .background(Color.white.edgesIgnoringSafeArea(.all))
             .navigationTitle("Home")
-            }
+        }
           
 
             
