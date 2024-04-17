@@ -19,6 +19,8 @@ final class SignUpEmailViewModel: ObservableObject {
         Task {
             do {
                 let returnedUserData = try await AuthenticationManager.shared.createUser(email: email, password:password)
+                //login
+                let returnedUserData = try await AuthenticationManager.shared.signIn(email: email, password: password)
                 print("success")
                 print(returnedUserData)
                 DispatchQueue.main.async {
