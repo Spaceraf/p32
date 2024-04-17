@@ -12,7 +12,6 @@ struct AuthDataResultModel {
 }
 
 final class AuthenticationManager: ObservableObject {
-    
     @Published var isUserAuthenticated: Bool
     static let shared = AuthenticationManager()
     

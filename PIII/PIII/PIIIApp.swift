@@ -6,7 +6,7 @@ struct PIIApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var authentication = AuthenticationManager()
     
-     var body: some Scene {
+    var body: some Scene {
         WindowGroup {
             if authentication.isUserAuthenticated {
                 NavigationView {

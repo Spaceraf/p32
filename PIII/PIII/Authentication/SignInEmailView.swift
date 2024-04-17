@@ -1,37 +1,43 @@
-//
-//  SignInEmailView.swift
-//  PIII
-//
-//  Created by builder on 3/7/24.
-//
-
 import SwiftUI
+
 @MainActor
-final class SignInEmailViewModel: ObservableObject {
-    
+final class SignUpEmailViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
+    @Binding var isUserAuthenticated: Bool
     
-    func signIn() {
+    init(isUserAuthenticated: Binding<Bool>) {
+        self._isUserAuthenticated = isUserAuthenticated
+    }
+    
+    func signUp() {
         guard !email.isEmpty, !password.isEmpty else {
             print("No Email or Password found.")
             return
         }
+        
         Task {
             do {
                 let returnedUserData = try await AuthenticationManager.shared.createUser(email: email, password:password)
                 print("success")
                 print(returnedUserData)
+                DispatchQueue.main.async {
+                    self.isUserAuthenticated = true
+                }
             } catch {
                 print("Error: \(error)")
             }
-            
         }
     }
 }
 
-struct SignInEmailView: View {
-    @StateObject private var viewmodel = SignInEmailViewModel()
+struct SignUpEmailView: View {
+    @StateObject private var viewmodel: SignUpEmailViewModel
+    
+    init(isUserAuthenticated: Binding<Bool>) {
+        _viewmodel = StateObject(wrappedValue: SignUpEmailViewModel(isUserAuthenticated: isUserAuthenticated))
+    }
+    
     var body: some View {
         VStack {
             TextField("Email...", text: $viewmodel.email)
@@ -44,8 +50,8 @@ struct SignInEmailView: View {
                 .background(Color.gray.opacity(0.4))
                 .cornerRadius(10)
             
-            Button(action: {viewmodel.signIn()}, label: {
-                Text("Sign In")
+            Button(action: {viewmodel.signUp()}, label: {
+                Text("Sign Up")
                     .font(.headline)
                     .foregroundColor(.white)
                     .frame(height: 55)
@@ -53,16 +59,14 @@ struct SignInEmailView: View {
                     .background(Color.blue)
                     .cornerRadius(10)
             })
-                
-            }
-        
+        }
         .padding()
-        .navigationTitle("Sign In With Email")
+        .navigationTitle("Sign Up With Email")
     }
 }
 
 #Preview {
     NavigationStack {
-        SignInEmailView()
+        SignUpEmailView(isUserAuthenticated: .constant(false))
     }
 }

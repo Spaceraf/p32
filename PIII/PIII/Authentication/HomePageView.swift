@@ -1,10 +1,9 @@
 import SwiftUI
 
 struct HomePageView: View {
-
     @EnvironmentObject var authManager: AuthenticationManager
     @Environment(\.presentationMode) var presentationMode
-
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
@@ -16,7 +15,7 @@ struct HomePageView: View {
                         .background(Color.blue)
                         .cornerRadius(10)
                 }
-
+                
                 NavigationLink(destination: ArticleListView()) {
                     Text("View Articles")
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -25,7 +24,8 @@ struct HomePageView: View {
                         .background(Color.green)
                         .cornerRadius(10)
                 }
-                   Button(action: {
+                
+                Button(action: {
                     do {
                         try authManager.signOut()
                         presentationMode.wrappedValue.dismiss()
@@ -45,8 +45,5 @@ struct HomePageView: View {
             .background(Color.white.edgesIgnoringSafeArea(.all))
             .navigationTitle("Home")
         }
-          
-
-            
     }
 }
