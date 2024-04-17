@@ -10,6 +10,7 @@ struct PIIApp: App {
         WindowGroup {
             if authentication.isUserAuthenticated {
                 HomePageView()
+                    .environmentObject(authentication)
             } else {
                 NavigationStack {
                     AuthenticationView()
